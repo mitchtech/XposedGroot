@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="Global Groot Settings" >
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="prefGrootSounds"
+            android:title="Groot sounds"
+            android:summary="Play Groot sounds on screen transistions" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="prefGrootText"
+            android:title="Groot text"
+            android:summary="Change text to Groot phrases" />
+    </PreferenceCategory>
+    
+    <PreferenceScreen android:title="Text Widgets to Groot-ify" 
+        android:dependency="prefGrootText"
+        android:key="prefTextWidgets">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="prefTextView"
+            android:summary="Most standard static text labels, buttons, hints, and popups."
+            android:title="TextViews" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="prefGlText"
+            android:summary="Some text titles, notifications, and many other less standard text rendering widgets."
+            android:title="GLES20Canvas" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="prefEditText"
+            android:summary="Most single and multi-line user input text boxes and auto-completes.\nNOTE: Issues may occur with password entry or with apps that require specifically formatted inputs."
+            android:title="EditTexts" />
+    </PreferenceScreen>
+    
+    <PreferenceScreen android:title="Per-App Settings" 
+        android:dependency="prefGrootText"
+        android:key="prefAppSettings">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="prefSystemUi"
+            android:summary="Modify text in Android System (com.android.*)"
+            android:title="System UI" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="prefAllApps"
+            android:summary="Modify text case in all other apps"
+            android:title="Other Apps" />
+    </PreferenceScreen>
+
+</PreferenceScreen>
