@@ -76,13 +76,13 @@ public class XposedGroot implements IXposedHookLoadPackage, IXposedHookZygoteIni
 
         // don't proceed if current package is a keyguard or lock screen
         if (lpparam.packageName.contains("keyguard") || lpparam.packageName.contains("lockclock")) {
-            XposedBridge.log(TAG + "disabled. package: " + lpparam.packageName);
+            // XposedBridge.log(TAG + "disabled. package: " + lpparam.packageName);
             return;
         }
         
         // don't proceed if current process is a keyguard or lock screen
         if (lpparam.processName.contains("keyguard") || lpparam.processName.contains("lockclock")) {
-            XposedBridge.log(TAG + "disabled. process: " + lpparam.processName);
+            // XposedBridge.log(TAG + "disabled. process: " + lpparam.processName);
             return;
         }
         
@@ -90,7 +90,7 @@ public class XposedGroot implements IXposedHookLoadPackage, IXposedHookZygoteIni
         if (lpparam.packageName.contains("systemui")) {
             XposedBridge.log(TAG + ": " + "systemui:" + lpparam.processName);
             if (lpparam.processName.contains("keyguard") || lpparam.packageName.contains("lockclock")) {
-                XposedBridge.log(TAG + "disabled:" + "systemui & keyguard");
+                // XposedBridge.log(TAG + "disabled:" + "systemui & keyguard");
                 return;
             }
         }
@@ -178,17 +178,21 @@ public class XposedGroot implements IXposedHookLoadPackage, IXposedHookZygoteIni
         int randomInt = new Random().nextInt(4);
         String fileName = "groot/groot" + randomInt + ".mp3";
         // XposedBridge.log(TAG + ": " + fileName);
-        File mp3File = new File(Environment.getExternalStorageDirectory(), fileName);
-        Uri mp3Uri = Uri.fromFile(mp3File);
-        MediaPlayer mediaPlayer = MediaPlayer.create(activity, mp3Uri);
-        mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+        try {
+            File mp3File = new File(Environment.getExternalStorageDirectory(), fileName);
+            Uri mp3Uri = Uri.fromFile(mp3File);
+            MediaPlayer mediaPlayer = MediaPlayer.create(activity, mp3Uri);
+            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
 
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mp.release();
-            }
-        });
-        mediaPlayer.start();
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mp.release();
+                }
+            });
+            mediaPlayer.start();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
     
 }
