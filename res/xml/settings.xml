@@ -30,23 +30,24 @@
         <SwitchPreference
             android:defaultValue="false"
             android:key="prefEditText"
-            android:summary="Most single and multi-line user input text boxes and auto-completes.\nNOTE: Issues may occur with password entry or with apps that require specifically formatted inputs."
+            android:summary="Most single and multi-line user input text boxes and auto-completes.\nWARNING: Issues may occur with password entry or with apps that require specifically formatted inputs."
             android:title="EditTexts" />
     </PreferenceScreen>
     
-    <PreferenceScreen android:title="Per-App Settings" 
-        android:dependency="prefGrootText"
-        android:key="prefAppSettings">
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="prefSystemUi"
-            android:summary="Modify text in Android System (com.android.*)"
-            android:title="System UI" />
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="prefAllApps"
-            android:summary="Modify text case in all other apps"
-            android:title="Other Apps" />
-    </PreferenceScreen>
+<!--     temporarily disabled to fix lockscreen/keyguard issues -->
+<!--     <PreferenceScreen android:title="App/System Settings"  -->
+<!--         android:dependency="prefGrootText" -->
+<!--         android:key="prefAppSettings"> -->
+<!--         <SwitchPreference -->
+<!--             android:defaultValue="true" -->
+<!--             android:key="prefAllApps" -->
+<!--             android:summary="Modify text in apps" -->
+<!--             android:title="App Text" /> -->
+<!--         <SwitchPreference -->
+<!--             android:defaultValue="true" -->
+<!--             android:key="prefSystemUi" -->
+<!--             android:summary="Modify text in Android System (com.android.*)\nWARNING: Issues may occur with lockscreens and keyguards, if enabled " -->
+<!--             android:title="System UI" /> -->
+<!--     </PreferenceScreen> -->
 
 </PreferenceScreen>
