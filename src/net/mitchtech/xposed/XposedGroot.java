@@ -5,6 +5,10 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookConstructor;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
+import android.app.KeyguardManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Paint;
 import android.media.MediaPlayer;
@@ -24,6 +28,7 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 import java.io.File;
+import java.util.List;
 import java.util.Random;
 
 public class XposedGroot implements IXposedHookLoadPackage, IXposedHookZygoteInit {
@@ -31,6 +36,7 @@ public class XposedGroot implements IXposedHookLoadPackage, IXposedHookZygoteIni
     private static final String TAG = XposedGroot.class.getSimpleName();
     private static final String PKG_NAME = "net.mitchtech.xposed.groot";
     private static final CharSequence[] GROOT_PHRASES = {"I am Groot", "I AM Groot", "I am GROOT", "GROOT"};
+    protected static final Context context = null;
     
     private XSharedPreferences prefs;
 
@@ -50,6 +56,7 @@ public class XposedGroot implements IXposedHookLoadPackage, IXposedHookZygoteIni
                 @Override
                 protected void afterHookedMethod(MethodHookParam methodHookParam) throws Throwable {
                     Activity activity = (Activity) methodHookParam.thisObject;
+                    // XposedBridge.log(TAG + ": " + activity.getCallingPackage());
                     playSound(activity);
                 }
             };
@@ -67,17 +74,39 @@ public class XposedGroot implements IXposedHookLoadPackage, IXposedHookZygoteIni
             return;
         }        
 
-        // don't proceed if current package is system ui and is disabled
-        if (lpparam.packageName.contains("com.android")) {
-            if (!isEnabled("prefSystemUi")) {
-                return;
-            }
-        // don't proceed for other apps if preference is disabled
-        } else {
-            if (!isEnabled("prefAllApps")) {
+        // don't proceed if current package is a keyguard or lock screen
+        if (lpparam.packageName.contains("keyguard") || lpparam.packageName.contains("lockclock")) {
+            XposedBridge.log(TAG + "disabled. package: " + lpparam.packageName);
+            return;
+        }
+        
+        // don't proceed if current process is a keyguard or lock screen
+        if (lpparam.processName.contains("keyguard") || lpparam.processName.contains("lockclock")) {
+            XposedBridge.log(TAG + "disabled. process: " + lpparam.processName);
+            return;
+        }
+        
+        // don't proceed if current package is systemui and process is a keyguard or lock screen
+        if (lpparam.packageName.contains("systemui")) {
+            XposedBridge.log(TAG + ": " + "systemui:" + lpparam.processName);
+            if (lpparam.processName.contains("keyguard") || lpparam.packageName.contains("lockclock")) {
+                XposedBridge.log(TAG + "disabled:" + "systemui & keyguard");
                 return;
             }
         }
+        
+//        temporarily disabled to fix lockscreen/keyguard issues    
+//        // don't proceed if current package is system ui and is disabled
+//        if (lpparam.packageName.contains("com.android")) {
+//            if (!isEnabled("prefSystemUi")) {
+//                return;
+//            }
+//        // don't proceed for other apps if preference is disabled
+//        } else {
+//            if (!isEnabled("prefAllApps")) {
+//                return;
+//            }
+//        }
 
         // common method hook for textviews
         XC_MethodHook textMethodHook = new XC_MethodHook() {
@@ -85,7 +114,7 @@ public class XposedGroot implements IXposedHookLoadPackage, IXposedHookZygoteIni
             @Override
             protected void beforeHookedMethod(MethodHookParam methodHookParam) throws Throwable {
                 CharSequence actualText = (CharSequence) methodHookParam.args[0];
-
+                // TextView textView = (TextView) methodHookParam.thisObject;
                 if (actualText != null) {
                     // methodHookParam.args[0] = "I am Groot";
                     methodHookParam.args[0] = GROOT_PHRASES[new Random().nextInt(GROOT_PHRASES.length)];
@@ -108,7 +137,6 @@ public class XposedGroot implements IXposedHookLoadPackage, IXposedHookZygoteIni
             findAndHookMethod("android.view.GLES20Canvas", null, "drawText", String.class,
                     float.class, float.class, Paint.class, textMethodHook);
         }
-            
             
         // hook editable text views
         if (isEnabled("prefEditText")) {
