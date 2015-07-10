@@ -8,8 +8,8 @@ android {
         applicationId "net.mitchtech.xposed.groot"
         targetSdkVersion 22
         minSdkVersion 15
-        versionCode 2
-        versionName "1.1"
+        versionCode 1
+        versionName "1.0"
     }
 
     buildTypes {
@@ -25,5 +25,10 @@ android {
 
 dependencies {
     provided fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.jenzz:materialpreference:1.3'
+    compile 'com.afollestad:material-dialogs:0.7.6.0'
+    compile 'com.infstory:switch-preference-compat:1.0.0'
 }
 
