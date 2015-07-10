@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="Global Groot Settings" >
-        <SwitchPreference
+    <com.jenzz.materialpreference.PreferenceCategory android:title="Global Groot Settings" >
+        <com.cgollner.unclouded.preferences.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="prefGrootSounds"
             android:title="Groot sounds"
             android:summary="Play Groot sounds on screen transistions" />
-        <SwitchPreference
+        <com.cgollner.unclouded.preferences.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="prefGrootText"
             android:title="Groot text"
             android:summary="Change text to Groot phrases" />
-    </PreferenceCategory>
+    </com.jenzz.materialpreference.PreferenceCategory>
     
-    <PreferenceScreen android:title="Text Widgets to Groot-ify" 
+    <com.jenzz.materialpreference.PreferenceCategory android:title="Text Widgets to Groot-ify"
         android:dependency="prefGrootText"
         android:key="prefTextWidgets">
-        <SwitchPreference
+        <com.cgollner.unclouded.preferences.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="prefTextView"
             android:summary="Most standard static text labels, buttons, hints, and popups."
             android:title="TextViews" />
-        <SwitchPreference
+        <com.cgollner.unclouded.preferences.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="prefGlText"
             android:summary="Some text titles, notifications, and many other less standard text rendering widgets."
             android:title="GLES20Canvas" />
-        <SwitchPreference
+        <com.cgollner.unclouded.preferences.SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="prefEditText"
             android:summary="Most single and multi-line user input text boxes and auto-completes.\nWARNING: Issues may occur with password entry or with apps that require specifically formatted inputs."
             android:title="EditTexts" />
-    </PreferenceScreen>
+    </com.jenzz.materialpreference.PreferenceCategory>
     
 <!--     temporarily disabled to fix lockscreen/keyguard issues -->
 <!--     <PreferenceScreen android:title="App/System Settings"  -->
