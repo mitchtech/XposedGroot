@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.tsengvn.typekit.TypekitContextWrapper;
+
 import net.mitchtech.xposed.groot.R;
 
 import java.io.File;
@@ -102,6 +104,11 @@ public class GrootPreferenceActivity extends AppCompatActivity {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
     public static String getVersion(Context context) {
